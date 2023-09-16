@@ -177,12 +177,8 @@ class SoftMaxLit(pl.LightningModule):
 
 class Data(Dataset):
     "The data for multi-class classification"
-    def __init__(self, df, *, x=None, load_batch_size=None, tokenizer=None, pretrained=None, one_hot=True):
-        if one_hot:
-            self.y, self.len = self._get_y_and_len_from_df(df)
-        else:
-            self.y = df['label'].tolist()
-            self.len = df['label'].shape[0]
+    def __init__(self, df, *, x=None, load_batch_size=None, tokenizer=None, pretrained=None):
+        self.y, self.len = self._get_y_and_len_from_df(df)
         
         if x is not None:
             self.x = x
@@ -198,7 +194,7 @@ class Data(Dataset):
             cls = pretrained(**{k: inputs[k][x:y] for k in list(inputs.keys())}).last_hidden_state[:, 0, :].detach()
 #             cls = pretrained(**{'input_ids':inputs['input_ids'][x:y],'token_type_ids':inputs['token_type_ids'][x:y],'attention_mask':inputs['attention_mask'][x:y]}).last_hidden_state[:, 0, :].detach()
             cls_arr.append(cls)
-        return torch.concat(cls_arr, dtype=torch.float32)
+        return torch.concat(cls_arr).type(torch.float32)
     
     def _get_y_and_len_from_df(self, df):
         dim_0 = df['text'].shape[0]
@@ -252,12 +248,16 @@ class TransformerModel():
         self.tokenizer = self.MODELS[model_tag]['tokenizer'].from_pretrained(self.MODELS[model_tag]['name'])
         self.pretrained = self.MODELS[model_tag]['pretrained'].from_pretrained(self.MODELS[model_tag]['name'])
         
-    def dataset(self, df, dev, save=False):
+    def dataset(self, df, dev, save=False, delete=False):
         # cur_df = df[:100] if dev else df
         dataset = Data(df, load_batch_size = 30, tokenizer=self.tokenizer, pretrained=self.pretrained)  # 10 > 30 > 40 yes # 4 is the best
 
         if save:
             torch.save(dataset.x, f"pretrained--dev={dev}--model={self.model_tag}.pt")
+        
+        if delete:
+            del dataset.x
+            torch.cuda.empty_cache()
 
         return dataset
 
