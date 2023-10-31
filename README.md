@@ -1,8 +1,10 @@
 # SynthDetectives@ALTA2023 Stacking the Odds: Transformer-based Ensemble for AI-generated Text Detection
 
+### Repository for the paper "[Stacking the Odds: Transformer-Based Ensemble for AI-Generated Text Detection](https://arxiv.org/abs/2310.18906)"
+
 Stacking ensemble of Transformers trained to detect AI-generated text for the [ALTA Shared Task 2023](https://www.alta.asn.au/events/sharedtask2023/).
 
-"Our approach is novel in terms of its choice of models in that we use accessible and lightweight models in the ensemble. We show that ensembling the models results in an improved accuracy in comparison with using them individually. Our approach achieves an accuracy score of 0.9555 on the official test data provided by the shared task organisers."
+**Abstract**: This paper reports our submission under the team name 'SynthDetectives' to the ALTA 2023 Shared Task. We use a stacking ensemble of Transformers for the task of AI-generated text detection. Our approach is novel in terms of its choice of models in that we use accessible and lightweight models in the ensemble. We show that ensembling the models results in an improved accuracy in comparison with using them individually. Our approach achieves an accuracy score of 0.9555 on the official test data provided by the shared task organisers. 
 
 ## Directory structure
 
@@ -63,3 +65,18 @@ The training was done on `python >= 3.8.10` on Google Cloud Platform's Vertex Co
 ## License
 
 - [MIT](LICENSE)
+
+## Citation
+
+If our work is useful for your own, you can cite us with the following BibTex entry:
+
+```
+@misc{nguyen2023stacking,
+      title={Stacking the Odds: Transformer-Based Ensemble for AI-Generated Text Detection}, 
+      author={Duke Nguyen and Khaing Myat Noe Naing and Aditya Joshi},
+      year={2023},
+      eprint={2310.18906},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
